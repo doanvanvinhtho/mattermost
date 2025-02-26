@@ -507,6 +507,8 @@ func (a *App) GetPlugins() (*model.PluginsResponse, *model.AppError) {
 		return nil, model.NewAppError("GetPlugins", "app.plugin.disabled.app_error", nil, "", http.StatusNotImplemented)
 	}
 
+	a.ch.srv.Log().Debug("GetPlugins", mlog.String("plugin_dir", pluginsEnvironment.PluginDir))
+
 	availablePlugins, err := pluginsEnvironment.Available()
 	if err != nil {
 		return nil, model.NewAppError("GetPlugins", "app.plugin.get_plugins.app_error", nil, "", http.StatusInternalServerError).Wrap(err)
