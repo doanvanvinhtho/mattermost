@@ -12,8 +12,6 @@ import type {UserProfile} from '@mattermost/types/users';
 
 import {trackEvent} from 'actions/telemetry_actions';
 
-import PricingModal from 'components/pricing_modal';
-
 import {
     Preferences,
     CloudBanners,
@@ -21,6 +19,7 @@ import {
     ModalIdentifiers,
     TELEMETRY_CATEGORIES,
     TrialPeriodDays,
+    CloudLinks,
 } from 'utils/constants';
 import {getLocaleDateFromUTC} from 'utils/utils';
 
@@ -104,17 +103,20 @@ class CloudTrialAnnouncementBar extends React.PureComponent<Props> {
             trackEvent(
                 TELEMETRY_CATEGORIES.CLOUD_ADMIN,
                 `click_subscribe_from_trial_banner_${daysLeftOnTrial}_days`,
+                {
+                    callerInfo: 'cloud_trial_announcement_bar',
+                }
             );
         } else {
             trackEvent(
                 TELEMETRY_CATEGORIES.CLOUD_ADMIN,
                 'click_subscribe_from_banner_trial_ended',
+                {
+                    callerInfo: 'cloud_trial_announcement_bar',
+                }
             );
         }
-        this.props.actions.openModal({
-            modalId: ModalIdentifiers.PRICING_MODAL,
-            dialogType: PricingModal,
-        });
+        window.open(CloudLinks.PRICING, '_blank', 'noopener,noreferrer');
     };
 
     render() {

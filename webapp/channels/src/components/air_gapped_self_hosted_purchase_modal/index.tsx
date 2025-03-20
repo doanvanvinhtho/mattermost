@@ -10,6 +10,8 @@ import {useControlAirGappedSelfHostedPurchaseModal} from 'components/common/hook
 import CreditCardSvg from 'components/common/svg_images_components/credit_card_svg';
 
 import {CloudLinks} from 'utils/constants';
+import {trackEvent} from 'actions/telemetry_actions';
+import {TELEMETRY_CATEGORIES} from 'utils/constants';
 
 import './content.scss';
 
@@ -40,7 +42,18 @@ export default function AirGappedSelfHostedPurhcaseModal() {
                         defaultMessage={'It appears that your instance is air-gapped, or it may not be connected to the internet. To purchase a license, please visit'}
                     />
                 </span>
-                <a href={CloudLinks.SELF_HOSTED_PRICING}>{CloudLinks.SELF_HOSTED_PRICING}</a>
+                <a 
+                  href={CloudLinks.SELF_HOSTED_PRICING}
+                  onClick={() => {
+                    trackEvent('self_hosted_pricing', 'click_open_pricing_page', {
+                      callerInfo: 'air_gapped_self_hosted_purchase_modal',
+                    });
+                  }}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {CloudLinks.SELF_HOSTED_PRICING}
+                </a>
             </div>
         </GenericModal>
     );

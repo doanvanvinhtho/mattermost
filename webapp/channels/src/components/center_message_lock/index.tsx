@@ -14,9 +14,10 @@ import {getCurrentTeam} from 'mattermost-redux/selectors/entities/teams';
 import {getCurrentUser} from 'mattermost-redux/selectors/entities/users';
 import {isAdmin} from 'mattermost-redux/utils/user_utils';
 
+import {trackEvent} from 'actions/telemetry_actions';
 import useGetLimits from 'components/common/hooks/useGetLimits';
 import {NotifyStatus} from 'components/common/hooks/useGetNotifyAdmin';
-import useOpenPricingModal from 'components/common/hooks/useOpenPricingModal';
+import useOpenPricingDetails from 'components/common/hooks/useOpenPricingDetails';
 import {useNotifyAdmin} from 'components/notify_admin_cta/notify_admin_cta';
 
 import {LicenseSkus, MattermostFeatures} from 'utils/constants';
@@ -43,7 +44,6 @@ function getNextDay(timestamp?: number): number {
 export default function CenterMessageLock(props: Props) {
     const intl = useIntl();
 
-    const openPricingModal = useOpenPricingModal();
     const isAdminUser = isAdmin(useSelector(getCurrentUser).roles);
     const [cloudLimits, limitsLoaded] = useGetLimits();
     const currentTeam = useSelector(getCurrentTeam);
@@ -53,6 +53,7 @@ export default function CenterMessageLock(props: Props) {
     // The message then shows that the user can retrieve messages prior to the day
     // **after** the most recent day with inaccessible posts.
     const oldestPostTime = useSelector((state: GlobalState) => getOldestPostTimeInChannel(state, props.channelId || '')) || getNextDay(props.firstInaccessiblePostTime);
+    const openPricingDetails = useOpenPricingDetails();
     const [notifyAdminBtnText, notifyAdmin, notifyRequestStatus] = useNotifyAdmin({
         ctaText: intl.formatMessage({
             id: 'workspace_limits.message_history.locked.cta.end_user',
@@ -123,7 +124,7 @@ export default function CenterMessageLock(props: Props) {
                         href='#'
                         onClick={(e: React.MouseEvent) => {
                             e.preventDefault();
-                            openPricingModal({trackingLocation: 'center_channel_posts_over_limit_banner'});
+                            openPricingDetails({trackingLocation: 'center_channel_posts_over_limit_banner'});
                         }}
                     >
                         {chunks}
@@ -135,7 +136,7 @@ export default function CenterMessageLock(props: Props) {
         cta = (
             <button
                 className='btn is-admin'
-                onClick={() => openPricingModal({trackingLocation: 'center_channel_posts_over_limit_banner'})}
+                onClick={() => openPricingDetails({trackingLocation: 'center_channel_posts_over_limit_banner_admin'})}
             >
                 {
                     intl.formatMessage({
