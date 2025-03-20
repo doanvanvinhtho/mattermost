@@ -4,8 +4,7 @@
 import {useCallback} from 'react';
 import {useSelector} from 'react-redux';
 
-import {isCurrentLicenseCloud} from 'mattermost-redux/selectors/entities/cloud';
-import {getSubscriptionProduct} from 'mattermost-redux/selectors/entities/cloud';
+import {isCurrentLicenseCloud, getSubscriptionProduct} from 'mattermost-redux/selectors/entities/cloud';
 
 import {trackEvent} from 'actions/telemetry_actions';
 
@@ -24,7 +23,7 @@ export type PurchaseFlowOptions = {
 
 /**
  * A hook that provides a function to start the purchase flow.
- * 
+ *
  * The purchase flow directs users to the appropriate external page
  * based on whether they are on Cloud or Self-Hosted, with proper
  * telemetry tracking. It also handles special scenarios like downgrades.
@@ -61,12 +60,12 @@ export default function useStartPurchaseFlow() {
                 trackEvent(category, 'click_start_downgrade_flow', {
                     callerInfo: options.trackingLocation,
                 });
-                
+
                 // Use downgrade feedback workflow instead of direct link
                 handleDowngradeFeedback();
                 return;
             }
-            
+
             // For self-hosted or cloud starter, just track as downgrade but use normal flow
             eventName = 'click_downgrade';
         }

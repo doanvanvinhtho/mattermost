@@ -5,13 +5,11 @@ import classNames from 'classnames';
 import noop from 'lodash/noop';
 import React, {useEffect, useState} from 'react';
 import {FormattedMessage, defineMessage, useIntl} from 'react-intl';
-import {useDispatch, useSelector} from 'react-redux';
+import {useSelector} from 'react-redux';
 
 import type {Team} from '@mattermost/types/teams';
 
 import {getLicense} from 'mattermost-redux/selectors/entities/general';
-
-import {openModal} from 'actions/views/modals';
 
 import useGetUsage from 'components/common/hooks/useGetUsage';
 import useGetUsageDeltas from 'components/common/hooks/useGetUsageDeltas';
@@ -20,7 +18,6 @@ import AdminPanel from 'components/widgets/admin_console/admin_panel';
 import TeamIcon from 'components/widgets/team_icon/team_icon';
 import WithTooltip from 'components/with_tooltip';
 
-import {ModalIdentifiers} from 'utils/constants';
 import {imageURLForTeam} from 'utils/utils';
 
 import './team_profile.scss';
@@ -36,7 +33,6 @@ type Props = {
 export function TeamProfile({team, isArchived, onToggleArchive, isDisabled, saveNeeded}: Props) {
     const teamIconUrl = imageURLForTeam(team);
     const usageDeltas = useGetUsageDeltas();
-    const dispatch = useDispatch();
     const usage = useGetUsage();
     const license = useSelector(getLicense);
     const intl = useIntl();

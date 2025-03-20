@@ -9,25 +9,25 @@ import type {Feedback} from '@mattermost/types/cloud';
 import {trackEvent} from 'actions/telemetry_actions';
 import {openModal, closeModal} from 'actions/views/modals';
 
-import DowngradeFeedbackModal from 'components/feedback_modal/downgrade_feedback';
 import DowngradeModal from 'components/downgrade_modal';
+import DowngradeFeedbackModal from 'components/feedback_modal/downgrade_feedback';
 
 import {ModalIdentifiers, CloudLinks, TELEMETRY_CATEGORIES} from 'utils/constants';
 
 /**
  * A hook that provides a function to handle the downgrade feedback flow.
- * 
+ *
  * This hook encapsulates the logic for gathering downgrade feedback
  * before redirecting the user to the pricing page.
  */
 export default function useHandleDowngradeFeedback() {
     const dispatch = useDispatch();
-    
+
     const handleDowngradeFeedback = useCallback(() => {
         trackEvent(TELEMETRY_CATEGORIES.CLOUD_ADMIN, 'click_start_downgrade_workflow', {
             callerInfo: 'downgrade_flow',
         });
-        
+
         // Opens the feedback modal first to collect feedback
         dispatch(openModal({
             modalId: ModalIdentifiers.FEEDBACK,
@@ -39,16 +39,16 @@ export default function useHandleDowngradeFeedback() {
                         reason: feedback.reason,
                         comments: feedback.comments ? 'true' : 'false',
                     });
-                    
+
                     // Close the feedback modal
                     dispatch(closeModal(ModalIdentifiers.FEEDBACK));
-                    
+
                     // Show the downgrade processing modal
                     dispatch(openModal({
                         modalId: ModalIdentifiers.DOWNGRADE_MODAL,
                         dialogType: DowngradeModal,
                     }));
-                    
+
                     // After a short delay, redirect to pricing page
                     setTimeout(() => {
                         dispatch(closeModal(ModalIdentifiers.DOWNGRADE_MODAL));
@@ -58,6 +58,6 @@ export default function useHandleDowngradeFeedback() {
             },
         }));
     }, [dispatch]);
-    
+
     return handleDowngradeFeedback;
 }

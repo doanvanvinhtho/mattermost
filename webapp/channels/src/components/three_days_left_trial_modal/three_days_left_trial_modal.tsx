@@ -48,7 +48,7 @@ function ThreeDaysLeftTrialModal(props: Props): JSX.Element | null {
     };
 
     const openPricingDetails = useOpenPricingDetails();
-    
+
     const handleOpenPricingModal = async () => {
         await dispatch(closeModal(ModalIdentifiers.THREE_DAYS_LEFT_TRIAL_MODAL));
         openPricingDetails({trackingLocation: 'three_days_left_trial_modal'});

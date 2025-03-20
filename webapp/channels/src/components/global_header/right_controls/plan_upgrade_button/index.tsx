@@ -11,8 +11,8 @@ import {getCloudSubscription as selectCloudSubscription, getSubscriptionProduct 
 import {getConfig, getLicense} from 'mattermost-redux/selectors/entities/general';
 import {isCurrentUserSystemAdmin} from 'mattermost-redux/selectors/entities/users';
 
-import WithTooltip from 'components/with_tooltip';
 import useOpenPricingDetails from 'components/common/hooks/useOpenPricingDetails';
+import WithTooltip from 'components/with_tooltip';
 
 import {CloudProducts} from 'utils/constants';
 
@@ -49,6 +49,7 @@ const PlanUpgradeButton = (): JSX.Element | null => {
     const product = useSelector(selectSubscriptionProduct);
     const config = useSelector(getConfig);
     const license = useSelector(getLicense);
+    const openPricingDetails = useOpenPricingDetails();
 
     const isEnterpriseTrial = subscription?.is_free_trial === 'true';
 
@@ -76,8 +77,6 @@ const PlanUpgradeButton = (): JSX.Element | null => {
     if (!isCloud && !(isSelfHostedStarter || isSelfHostedEnterpriseTrial)) {
         return null;
     }
-
-    const openPricingDetails = useOpenPricingDetails();
 
     return (
         <WithTooltip

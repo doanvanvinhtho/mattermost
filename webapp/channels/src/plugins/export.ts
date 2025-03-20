@@ -62,6 +62,7 @@ interface WindowWithLibraries {
         browserHistory: ReturnType<typeof getHistory>;
     };
     openPricingModal: () => void;
+    open: (url: string, target?: string, features?: string) => Window | null;
     Components: {
         Textbox: typeof Textbox;
         Timestamp: typeof Timestamp;
@@ -140,7 +141,7 @@ window.openPricingModal = () => {
         callerInfo: 'plugins_api',
     });
     window.open(CloudLinks.PRICING, '_blank', 'noopener,noreferrer');
-    
+
     // When the returned function is called (previous API pattern), also use the same URL
     return () => {
         trackEvent('self_hosted_pricing', 'click_open_pricing_page', {

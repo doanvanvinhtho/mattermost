@@ -4,8 +4,8 @@
 import React from 'react';
 import {FormattedMessage} from 'react-intl';
 
-import SetupSystemSvg from 'components/common/svg_images_components/setup_system';
 import useOpenPricingDetails from 'components/common/hooks/useOpenPricingDetails';
+import SetupSystemSvg from 'components/common/svg_images_components/setup_system';
 import ConfirmModalRedux from 'components/confirm_modal_redux';
 
 import './upgrade_export_data_modal.scss';
@@ -16,7 +16,7 @@ type Props = {
 
 export function UpgradeExportDataModal({onExited}: Props) {
     const openPricingDetails = useOpenPricingDetails();
-    
+
     const confirm = () => {
         openPricingDetails({trackingLocation: 'upgrade_export_data_modal'});
     };

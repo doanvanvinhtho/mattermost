@@ -14,7 +14,6 @@ import {getCurrentTeam} from 'mattermost-redux/selectors/entities/teams';
 import {getCurrentUser} from 'mattermost-redux/selectors/entities/users';
 import {isAdmin} from 'mattermost-redux/utils/user_utils';
 
-import {trackEvent} from 'actions/telemetry_actions';
 import useGetLimits from 'components/common/hooks/useGetLimits';
 import {NotifyStatus} from 'components/common/hooks/useGetNotifyAdmin';
 import useOpenPricingDetails from 'components/common/hooks/useOpenPricingDetails';

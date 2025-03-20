@@ -14,7 +14,7 @@ import {
     getCloudErrors,
 } from 'mattermost-redux/selectors/entities/cloud';
 
-import {pageVisited, trackEvent} from 'actions/telemetry_actions';
+import {pageVisited} from 'actions/telemetry_actions';
 
 import CloudTrialBanner from 'components/admin_console/billing/billing_subscriptions/cloud_trial_banner';
 import CloudFetchError from 'components/cloud_fetch_error';

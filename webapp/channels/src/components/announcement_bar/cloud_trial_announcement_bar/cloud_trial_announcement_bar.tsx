@@ -16,7 +16,6 @@ import {
     Preferences,
     CloudBanners,
     AnnouncementBarTypes,
-    ModalIdentifiers,
     TELEMETRY_CATEGORIES,
     TrialPeriodDays,
     CloudLinks,
@@ -105,7 +104,7 @@ class CloudTrialAnnouncementBar extends React.PureComponent<Props> {
                 `click_subscribe_from_trial_banner_${daysLeftOnTrial}_days`,
                 {
                     callerInfo: 'cloud_trial_announcement_bar',
-                }
+                },
             );
         } else {
             trackEvent(
@@ -113,7 +112,7 @@ class CloudTrialAnnouncementBar extends React.PureComponent<Props> {
                 'click_subscribe_from_banner_trial_ended',
                 {
                     callerInfo: 'cloud_trial_announcement_bar',
-                }
+                },
             );
         }
         window.open(CloudLinks.PRICING, '_blank', 'noopener,noreferrer');
