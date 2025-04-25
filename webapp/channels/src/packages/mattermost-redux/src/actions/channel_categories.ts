@@ -19,6 +19,7 @@ import {
     getCategoryInTeamByType,
     getCategoryInTeamWithChannel,
 } from 'mattermost-redux/selectors/entities/channel_categories';
+import {getConfig, getFeatureFlagValue} from 'mattermost-redux/selectors/entities/general';
 import {getCurrentUserId} from 'mattermost-redux/selectors/entities/users';
 import type {
     ActionFuncAsync,
@@ -188,6 +189,66 @@ export function addChannelToInitialCategory(channel: Channel, setOnServer = fals
                     channel_ids: insertWithoutDuplicates(category.channel_ids, channel.id, 0),
                 })),
             });
+        }
+
+        const shouldSort = getFeatureFlagValue(state, 'AutomaticChannelCategorySorting') === 'true';
+        if (shouldSort) {
+            const sortingFormat = getConfig(state).ExperimentalChannelCategorySortingFormat;
+
+            // Check if channel name matches the format "[Category Name] Channel Name"
+            const categoryMatch = channel.display_name.match(sortingFormat && sortingFormat !== '' ? `^${sortingFormat}$` : /^\[(?<category>[^\]]+)\]\s+(?<name>.+)$/);
+            if (categoryMatch) {
+                const categoryName = categoryMatch.groups?.category;
+                if (!categoryName) {
+                    return {data: false};
+                }
+
+                // Remove the category name from the channel display name
+                const channelName = categoryMatch.groups?.name;
+                try {
+                    await Client4.patchChannel(channel.id, {
+                        display_name: channelName,
+                    });
+                } catch (error) {
+                    forceLogoutIfNecessary(error, dispatch, getState);
+                    dispatch(logError(error));
+                }
+
+                // Find or create the category
+                let targetCategory = categories.find((category) =>
+                    category.type === CategoryTypes.CUSTOM &&
+                    category.display_name === categoryName,
+                );
+
+                if (!targetCategory) {
+                    if (!setOnServer) {
+                        return {data: false};
+                    }
+
+                    // Create new category if it doesn't exist
+                    const result = await dispatch(createCategory(channel.team_id, categoryName));
+                    if (result.error) {
+                        // If category creation fails, fall back to default behavior
+                        // eslint-disable-next-line no-console
+                        console.error('Failed to create category:', result.error);
+                    } else {
+                        targetCategory = result.data;
+                    }
+                }
+
+                if (targetCategory) {
+                    await dispatch({
+                        type: ChannelCategoryTypes.RECEIVED_CATEGORIES,
+                        data: [{
+                            ...targetCategory,
+                            channel_ids: insertWithoutDuplicates(targetCategory.channel_ids ?? [], channel.id, 0),
+                        }],
+                    });
+                    if (setOnServer) {
+                        return dispatch(addChannelToCategory(targetCategory.id, channel.id));
+                    }
+                }
+            }
         }
 
         // Add the new channel to the Channels category on the channel's team
