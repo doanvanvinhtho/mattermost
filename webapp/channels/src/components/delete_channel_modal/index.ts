@@ -15,7 +15,7 @@ import DeleteChannelModal from './delete_channel_modal';
 
 function mapStateToProps(state: GlobalState) {
     return {
-        canViewArchivedChannels: true, // Always true as access to archived channels is now allowed
+        canViewArchivedChannels: true,
         currentTeamDetails: getCurrentTeam(state),
     };
 }

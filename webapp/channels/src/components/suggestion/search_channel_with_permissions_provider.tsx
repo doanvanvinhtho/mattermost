@@ -196,7 +196,6 @@ export default class SearchChannelWithPermissionsProvider extends Provider {
             if (channelFilter(channel)) {
                 const newChannel = Object.assign({}, channel);
 
-                // Channel archived status is no longer used for filtering
                 const wrappedChannel = {channel: newChannel, name: newChannel.name, deactivated: false, type: newChannel.type};
                 if (!members[channel.id]) {
                     continue;

@@ -282,7 +282,6 @@ export function handlePosts(state: IDMappedObjects<Post> = {}, action: MMReduxAc
     case ChannelTypes.RECEIVED_CHANNEL_DELETED:
     case ChannelTypes.DELETE_CHANNEL_SUCCESS:
     case ChannelTypes.LEAVE_CHANNEL: {
-        // We always want to store posts in archived channels
         return state;
     }
 
@@ -820,7 +819,6 @@ export function postsInChannel(state: Record<string, PostOrderBlock[]> = {}, act
     case ChannelTypes.RECEIVED_CHANNEL_DELETED:
     case ChannelTypes.DELETE_CHANNEL_SUCCESS:
     case ChannelTypes.LEAVE_CHANNEL: {
-        // We always want to store posts in archived channels
         return state;
     }
 
@@ -1082,7 +1080,6 @@ export function postsInThread(state: RelationOneToMany<Post, Post> = {}, action:
     case ChannelTypes.RECEIVED_CHANNEL_DELETED:
     case ChannelTypes.DELETE_CHANNEL_SUCCESS:
     case ChannelTypes.LEAVE_CHANNEL: {
-        // We always want to store posts in archived channels
         return state;
     }
 
@@ -1478,7 +1475,6 @@ export function limitedViews(
     case ChannelTypes.RECEIVED_CHANNEL_DELETED:
     case ChannelTypes.DELETE_CHANNEL_SUCCESS:
     case ChannelTypes.LEAVE_CHANNEL: {
-        // We always want to store posts in archived channels
         return state;
     }
 

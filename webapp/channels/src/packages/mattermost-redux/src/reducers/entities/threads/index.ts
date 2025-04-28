@@ -156,8 +156,6 @@ function reducer(state: ThreadsState = initialState, action: MMReduxAction): Thr
     };
 
     // acting as a 'middleware'
-    // We always keep threads for archived channels, so no need to delete them
-    // when a channel is archived or left
 
     const nextState = {
 
