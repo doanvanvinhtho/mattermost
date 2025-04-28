@@ -2,6 +2,7 @@
 // See LICENSE.txt for license information.
 
 import React from 'react';
+import {Constants} from 'utils/constants';
 
 import type {Channel} from '@mattermost/types/channels';
 
@@ -18,8 +19,6 @@ import type {ActionResult} from 'mattermost-redux/types/actions';
 import {sortChannelsByTypeAndDisplayName} from 'mattermost-redux/utils/channel_utils';
 
 import store from 'stores/redux_store';
-
-import {Constants} from 'utils/constants';
 
 import Provider from './provider';
 import type {ResultsCallback} from './provider';
@@ -196,12 +195,10 @@ export default class SearchChannelWithPermissionsProvider extends Provider {
 
             if (channelFilter(channel)) {
                 const newChannel = Object.assign({}, channel);
-                const channelIsArchived = channel.delete_at !== 0;
 
+                // Channel archived status is no longer used for filtering
                 const wrappedChannel = {channel: newChannel, name: newChannel.name, deactivated: false, type: newChannel.type};
-                if (!viewArchivedChannels && channelIsArchived) {
-                    continue;
-                } else if (!members[channel.id]) {
+                if (!members[channel.id]) {
                     continue;
                 } else if (channel.type !== Constants.OPEN_CHANNEL && channel.type !== Constants.PRIVATE_CHANNEL) {
                     continue;
