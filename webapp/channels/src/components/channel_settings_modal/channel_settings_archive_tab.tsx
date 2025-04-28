@@ -3,11 +3,9 @@
 
 import React, {useState, useCallback} from 'react';
 import {FormattedMessage, useIntl} from 'react-intl';
-import {useDispatch, useSelector} from 'react-redux';
+import {useDispatch} from 'react-redux';
 
 import type {Channel} from '@mattermost/types/channels';
-
-import {getConfig} from 'mattermost-redux/selectors/entities/general';
 
 import {deleteChannel} from 'actions/views/channel';
 
@@ -27,8 +25,6 @@ function ChannelSettingsArchiveTab({
     const {formatMessage} = useIntl();
     const dispatch = useDispatch();
 
-    // Redux selector
-    const canViewArchivedChannels = true; // Always true as access to archived channels is now allowed
 
     const [showArchiveConfirmModal, setShowArchiveConfirmModal] = useState(false);
 
@@ -72,10 +68,7 @@ function ChannelSettingsArchiveTab({
                         <div>
                             <p>
                                 <FormattedMessage
-                                    id={canViewArchivedChannels ?
-                                        'deleteChannelModal.canViewArchivedChannelsWarning' :
-                                        'deleteChannelModal.cannotViewArchivedChannelsWarning'
-                                    }
+                                    id='deleteChannelModal.canViewArchivedChannelsWarning'
                                     defaultMessage="Archiving a channel removes it from the user interface, but doesn't permanently delete the channel. New messages can't be posted to archived channels."
                                 />
                             </p>
