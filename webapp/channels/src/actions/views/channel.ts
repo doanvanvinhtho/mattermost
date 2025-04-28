@@ -535,7 +535,7 @@ export function deleteChannel(channelId: string): ActionFuncAsync<boolean> {
             return {data: false};
         }
 
-        const canViewArchivedChannels = getConfig(state).ExperimentalViewArchivedChannels === 'true';
+        const canViewArchivedChannels = true;
         const currentTeamDetails = getCurrentTeam(state);
         const penultimateViewedChannelName = getPenultimateViewedChannelName(state) ||
             getRedirectChannelNameForTeam(state, getCurrentTeamId(state));

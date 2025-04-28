@@ -57,7 +57,7 @@ function mapStateToProps(state: GlobalState) {
         teamId: getCurrentTeamId(state),
         teamName: team?.name,
         channelsRequestStarted: state.requests.channels.getChannels.status === RequestStatus.STARTED,
-        canShowArchivedChannels: (getConfig(state).ExperimentalViewArchivedChannels === 'true'),
+        canShowArchivedChannels: true,
         myChannelMemberships: getMyChannelMemberships(state) || {},
         shouldHideJoinedChannels: getGlobalItem(state) === 'true',
         rhsState: getRhsState(state),

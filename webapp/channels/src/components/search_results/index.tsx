@@ -36,7 +36,7 @@ function makeMapStateToProps() {
     return function mapStateToProps(state: GlobalState) {
         const config = getConfig(state);
 
-        const viewArchivedChannels = config.ExperimentalViewArchivedChannels === 'true';
+        const viewArchivedChannels = true;
 
         const newResults = getSearchResults(state);
 

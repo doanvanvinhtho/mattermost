@@ -28,7 +28,7 @@ function ChannelSettingsArchiveTab({
     const dispatch = useDispatch();
 
     // Redux selector
-    const canViewArchivedChannels = useSelector((state: GlobalState) => getConfig(state).ExperimentalViewArchivedChannels === 'true');
+    const canViewArchivedChannels = true; // Always true as access to archived channels is now allowed
 
     const [showArchiveConfirmModal, setShowArchiveConfirmModal] = useState(false);
 

@@ -813,17 +813,6 @@ func getUsers(c *Context, w http.ResponseWriter, r *http.Request) {
 	)
 
 	if inChannelId != "" {
-		if !*c.App.Config().TeamSettings.ExperimentalViewArchivedChannels {
-			channel, cErr := c.App.GetChannel(c.AppContext, inChannelId)
-			if cErr != nil {
-				c.Err = cErr
-				return
-			}
-			if channel.DeleteAt != 0 {
-				c.Err = model.NewAppError("Api4.getUsersInChannel", "api.user.view_archived_channels.get_users_in_channel.app_error", nil, "", http.StatusForbidden)
-				return
-			}
-		}
 	}
 
 	if withoutTeamBool, _ := strconv.ParseBool(withoutTeam); withoutTeamBool {

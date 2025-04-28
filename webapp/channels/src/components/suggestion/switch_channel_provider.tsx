@@ -593,7 +593,7 @@ export default class SwitchChannelProvider extends Provider {
 
         const state = this.store.getState();
         const config = getConfig(state);
-        const viewArchivedChannels = config.ExperimentalViewArchivedChannels === 'true';
+        const viewArchivedChannels = true; // Always true as access to archived channels is now allowed
         const allUnreadChannelIds = getAllTeamsUnreadChannelIds(state);
         const allUnreadChannelIdsSet = new Set(allUnreadChannelIds);
         const currentUserId = getCurrentUserId(state);

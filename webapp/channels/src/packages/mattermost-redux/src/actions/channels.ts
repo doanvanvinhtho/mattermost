@@ -643,7 +643,7 @@ export function joinChannel(userId: string, teamId: string, channelId: string, c
 export function deleteChannel(channelId: string): ActionFuncAsync {
     return async (dispatch, getState) => {
         let state = getState();
-        const viewArchivedChannels = state.entities.general.config.ExperimentalViewArchivedChannels === 'true';
+        const viewArchivedChannels = true;
 
         try {
             await Client4.deleteChannel(channelId);
@@ -682,7 +682,7 @@ export function unarchiveChannel(channelId: string): ActionFuncAsync {
 
         const state = getState();
         const config = getConfig(state);
-        const viewArchivedChannels = config.ExperimentalViewArchivedChannels === 'true';
+        const viewArchivedChannels = true;
         dispatch({type: ChannelTypes.UNARCHIVED_CHANNEL_SUCCESS, data: {id: channelId, viewArchivedChannels}});
 
         return {data: true};

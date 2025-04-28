@@ -35,7 +35,7 @@ function mapStateToProps(state: GlobalState) {
 
     const config = getConfig(state);
 
-    const viewArchivedChannels = config.ExperimentalViewArchivedChannels === 'true';
+    const viewArchivedChannels = true; // Always true as access to archived channels is now allowed
     const enableOnboardingFlow = config.EnableOnboardingFlow === 'true';
     const enableWebSocketEventScope = config.FeatureFlagWebSocketEventScope === 'true';
 

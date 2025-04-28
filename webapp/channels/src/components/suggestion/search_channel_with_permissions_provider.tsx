@@ -191,7 +191,7 @@ export default class SearchChannelWithPermissionsProvider extends Provider {
         const channelFilter = this.makeChannelSearchFilter(channelPrefix);
 
         const config = getConfig(state);
-        const viewArchivedChannels = config.ExperimentalViewArchivedChannels === 'true';
+        const viewArchivedChannels = true; // Always true as access to archived channels is now allowed
 
         for (const channel of allChannels) {
             if (completedChannels[channel.id]) {

@@ -212,7 +212,7 @@ export function performSearch(terms: string, teamId: string, isMentionSearch?: b
     return (dispatch, getState) => {
         let searchTerms = terms;
         const config = getConfig(getState());
-        const viewArchivedChannels = config.ExperimentalViewArchivedChannels === 'true';
+        const viewArchivedChannels = true;
         const extensionsFilters = getFilesSearchExtFilter(getState());
 
         const extensions = extensionsFilters?.map((ext) => `ext:${ext}`).join(' ');
