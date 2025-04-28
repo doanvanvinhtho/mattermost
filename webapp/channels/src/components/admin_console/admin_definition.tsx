@@ -6666,13 +6666,22 @@ const AdminDefinition: AdminDefinitionType = {
                         },
                         {
                             type: 'text',
-                            key: 'ExperimentalSettings.ChannelCategorySortingFormat',
-                            label: defineMessage({id: 'admin.experimental.channelCategorySortingFormat.title', defaultMessage: 'Channel Category Sorting Format:'}),
-                            help_text: defineMessage({id: 'admin.experimental.channelCategorySortingFormat.desc', defaultMessage: 'Specify the format for channel category sorting. Use {name} as a placeholder for the channel name. Example: "[{name}]" will sort channels with names in brackets.'}),
+                            key: 'ExperimentalSettings.ChannelCategorySortingDelimiter',
+                            label: defineMessage({id: 'admin.experimental.channelCategorySortingDelimiter.title', defaultMessage: 'Channel Category Sorting Delimiter:'}),
+                            help_text: defineMessage({id: 'admin.experimental.channelCategorySortingDelimiter.desc', defaultMessage: 'Specify a single character delimiter for channel category sorting.'}),
                             help_text_markdown: false,
-                            placeholder: defineMessage({id: 'admin.experimental.channelCategorySortingFormat.example', defaultMessage: 'E.g.: "[{name}]"'}),
+                            placeholder: defineMessage({id: 'admin.experimental.channelCategorySortingDelimiter.example', defaultMessage: 'E.g.: "/"'}),
                             isDisabled: it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.EXPERIMENTAL.FEATURES)),
                             isHidden: it.configIsFalse('FeatureFlags', 'AutomaticChannelCategorySorting'),
+                            validate: (value: string) => {
+                                if (value && value.length !== 1) {
+                                    return new ValidationResult(false, defineMessage({
+                                        id: 'admin.experimental.channelCategorySortingDelimiter.error',
+                                        defaultMessage: 'The delimiter must be exactly one character',
+                                    }));
+                                }
+                                return new ValidationResult(true, '');
+                            },
                         },
                     ],
                 },

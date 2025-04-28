@@ -193,18 +193,18 @@ export function addChannelToInitialCategory(channel: Channel, setOnServer = fals
 
         const shouldSort = getFeatureFlagValue(state, 'AutomaticChannelCategorySorting') === 'true';
         if (shouldSort) {
-            const sortingFormat = getConfig(state).ExperimentalChannelCategorySortingFormat;
+            const delimiter = getConfig(state).ExperimentalChannelCategorySortingDelimiter || '/';
 
             // Check if channel name matches the format "[Category Name] Channel Name"
-            const categoryMatch = channel.display_name.match(sortingFormat && sortingFormat !== '' ? `^${sortingFormat}$` : /^\[(?<category>[^\]]+)\]\s+(?<name>.+)$/);
-            if (categoryMatch) {
-                const categoryName = categoryMatch.groups?.category;
+            const categoryMatch = channel.display_name.split(delimiter);
+            if (categoryMatch.length > 1) {
+                const categoryName = categoryMatch[0];
                 if (!categoryName) {
                     return {data: false};
                 }
 
                 // Remove the category name from the channel display name
-                const channelName = categoryMatch.groups?.name;
+                const channelName = categoryMatch.slice(1).join(delimiter);
                 try {
                     await Client4.patchChannel(channel.id, {
                         display_name: channelName,

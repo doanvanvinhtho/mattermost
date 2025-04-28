@@ -112,7 +112,7 @@ export type ClientConfig = {
     EnableUserDeactivation: string;
     EnableUserTypingMessages: string;
     EnforceMultifactorAuthentication: string;
-    ExperimentalChannelCategorySortingFormat: string;
+    ExperimentalChannelCategorySortingDelimiter: string;
     ExperimentalClientSideCertCheck: string;
     ExperimentalClientSideCertEnable: string;
     ExperimentalEnableAuthenticationTransfer: string;
@@ -822,7 +822,7 @@ export type ExperimentalSettings = {
     DisableWakeUpReconnectHandler: boolean;
     UsersStatusAndProfileFetchingPollIntervalMilliseconds: number;
     YoutubeReferrerPolicy: boolean;
-    ChannelCategorySortingFormat: string;
+    ChannelCategorySortingDelimiter: string;
 };
 
 export type AnalyticsSettings = {
