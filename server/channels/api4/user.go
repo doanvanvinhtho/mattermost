@@ -812,9 +812,6 @@ func getUsers(c *Context, w http.ResponseWriter, r *http.Request) {
 		etag     string
 	)
 
-	if inChannelId != "" {
-	}
-
 	if withoutTeamBool, _ := strconv.ParseBool(withoutTeam); withoutTeamBool {
 		// Use a special permission for now
 		if !c.App.SessionHasPermissionTo(*c.AppContext.Session(), model.PermissionListUsersWithoutTeam) {

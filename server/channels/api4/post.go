@@ -222,7 +222,6 @@ func getPostsForChannel(c *Context, w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-
 	var list *model.PostList
 	etag := ""
 

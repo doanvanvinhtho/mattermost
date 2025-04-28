@@ -2269,11 +2269,9 @@ func TestGetPostsForChannel(t *testing.T) {
 		_, err = th.SystemAdminClient.DeleteChannel(context.Background(), channel.Id)
 		require.NoError(t, err)
 
-
 		// the endpoint should work fine when viewing archived channels is enabled
 		_, _, err = c.GetPostsForChannel(context.Background(), channel.Id, 0, 10, "", false, false)
 		require.NoError(t, err)
-
 	}, "Should forbid to retrieve posts if the channel is archived and users are not allowed to view archived messages")
 
 	_, err = client.DeletePost(context.Background(), post10.Id)
@@ -3815,7 +3813,6 @@ func TestSearchPosts(t *testing.T) {
 	posts, _, err = client.SearchPostsWithParams(context.Background(), th.BasicTeam.Id, &searchParams)
 	require.NoError(t, err)
 	require.Len(t, posts.Order, 2, "wrong search")
-
 
 	posts, _, err = client.SearchPostsWithParams(context.Background(), th.BasicTeam.Id, &searchParams)
 	require.NoError(t, err)

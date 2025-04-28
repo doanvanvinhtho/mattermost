@@ -3230,7 +3230,6 @@ func TestGetUsersInChannel(t *testing.T) {
 		_, err = th.SystemAdminClient.DeleteChannel(context.Background(), channel.Id)
 		require.NoError(t, err)
 
-
 		// the endpoint should work fine for all clients when viewing
 		// archived channels is enabled
 		for _, client := range []*model.Client4{th.SystemAdminClient, th.Client, th.LocalClient} {

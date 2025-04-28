@@ -3010,7 +3010,6 @@ func TestSanitizePostMetadataForUserAndChannel(t *testing.T) {
 	})
 
 	t.Run("channel previews always work for archived channels", func(t *testing.T) {
-
 		publicChannel, err := th.App.CreateChannel(th.Context, &model.Channel{
 			Name:      model.NewId(),
 			Type:      model.ChannelTypeOpen,

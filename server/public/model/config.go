@@ -2428,7 +2428,6 @@ func (s *TeamSettings) SetDefaults() {
 		s.EnableUserCreation = NewPointer(true)
 	}
 
-
 	if s.LockTeammateNameDisplay == nil {
 		s.LockTeammateNameDisplay = NewPointer(false)
 	}

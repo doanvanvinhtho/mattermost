@@ -1458,7 +1458,6 @@ func TestSearchFilesInTeam(t *testing.T) {
 	require.NoError(t, err)
 	require.Len(t, fileInfos.Order, 3, "wrong search")
 
-
 	fileInfos, _, err = client.SearchFilesWithParams(context.Background(), th.BasicTeam.Id, &searchParams)
 	require.NoError(t, err)
 	require.Len(t, fileInfos.Order, 2, "wrong search")
