@@ -3230,7 +3230,6 @@ func TestGetUsersInChannel(t *testing.T) {
 		_, err = th.SystemAdminClient.DeleteChannel(context.Background(), channel.Id)
 		require.NoError(t, err)
 
-		// Users can always view archived channels they are members of
 
 		// the endpoint should work fine for all clients when viewing
 		// archived channels is enabled

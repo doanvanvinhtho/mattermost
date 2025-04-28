@@ -236,7 +236,7 @@ func TestSessionHasPermissionToChannel(t *testing.T) {
 		assert.True(t, th.App.SessionHasPermissionToChannel(th.Context, session, th.BasicChannel.Id, model.PermissionAddReaction))
 	})
 
-	t.Run("basic user can access archived channel (always allowed)", func(t *testing.T) {
+	t.Run("basic user can access archived channel", func(t *testing.T) {
 		err := th.App.DeleteChannel(th.Context, th.BasicChannel, th.SystemAdminUser.Id)
 		require.Nil(t, err)
 		assert.True(t, th.App.SessionHasPermissionToChannel(th.Context, session, th.BasicChannel.Id, model.PermissionReadChannel))
@@ -305,7 +305,7 @@ func TestSessionHasPermissionToChannels(t *testing.T) {
 		assert.False(t, th.App.SessionHasPermissionToChannels(th.Context, session, allChannels, model.PermissionReadChannel))
 	})
 
-	t.Run("basic user can access archived channel (always allowed)", func(t *testing.T) {
+	t.Run("basic user can access archived channel", func(t *testing.T) {
 		session := model.Session{
 			UserId: th.BasicUser.Id,
 		}
@@ -319,7 +319,7 @@ func TestSessionHasPermissionToChannels(t *testing.T) {
 		assert.True(t, th.App.SessionHasPermissionToChannels(th.Context, session, []string{newChannel.Id}, model.PermissionReadChannel))
 	})
 
-	t.Run("basic user can access mixed archived and non-archived channels (always allowed)", func(t *testing.T) {
+	t.Run("basic user can access mixed archived and non-archived channels", func(t *testing.T) {
 		session := model.Session{
 			UserId: th.BasicUser.Id,
 		}
@@ -713,7 +713,7 @@ func TestHasPermissionToReadChannel(t *testing.T) {
 		expected                bool
 	}{
 		{
-			name:                    "Can read archived channels (always allowed)",
+			name:                    "Can read archived channels",
 			configComplianceEnabled: true,
 			channelDeleted:          true,
 			canReadChannel:          true,
@@ -835,7 +835,7 @@ func TestSessionHasPermissionToChannelByPost(t *testing.T) {
 		require.Equal(t, false, th.App.SessionHasPermissionToChannelByPost(*session2, post.Id, model.PermissionReadChannel))
 	})
 
-	t.Run("read archived channel - always allowed", func(t *testing.T) {
+	t.Run("read archived channel", func(t *testing.T) {
 		require.Equal(t, true, th.App.SessionHasPermissionToChannelByPost(*session, archivedPost.Id, model.PermissionReadChannel))
 		require.Equal(t, false, th.App.SessionHasPermissionToChannelByPost(*session2, archivedPost.Id, model.PermissionReadChannel))
 	})
@@ -875,7 +875,7 @@ func TestHasPermissionToChannelByPost(t *testing.T) {
 		require.Equal(t, false, th.App.HasPermissionToChannelByPost(th.Context, th.BasicUser2.Id, post.Id, model.PermissionReadChannel))
 	})
 
-	t.Run("read archived channel - always allowed", func(t *testing.T) {
+	t.Run("read archived channel", func(t *testing.T) {
 		require.Equal(t, true, th.App.HasPermissionToChannelByPost(th.Context, th.BasicUser.Id, archivedPost.Id, model.PermissionReadChannel))
 		require.Equal(t, false, th.App.HasPermissionToChannelByPost(th.Context, th.BasicUser2.Id, archivedPost.Id, model.PermissionReadChannel))
 	})

@@ -3050,7 +3050,6 @@ func TestSanitizePostMetadataForUserAndChannel(t *testing.T) {
 
 		previewedPost := model.NewPreviewPost(post, th.BasicTeam, publicChannel)
 
-		// Users can always view archived channels they are members of
 		actual := th.App.sanitizePostMetadataForUserAndChannel(th.Context, post, previewedPost, publicChannel, th.BasicUser.Id)
 		assert.NotNil(t, actual.Metadata.Embeds[0].Data)
 	})
@@ -3219,7 +3218,6 @@ func TestSanitizePostMetadataForUser(t *testing.T) {
 			},
 		}
 
-		// Users can always view archived channels they are members of
 		sanitizedPost, err := th.App.SanitizePostMetadataForUser(th.Context, post, th.BasicUser.Id)
 		require.Nil(t, err)
 		require.NotNil(t, sanitizedPost)
