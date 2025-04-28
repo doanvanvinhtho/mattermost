@@ -653,7 +653,7 @@ export function deleteChannel(channelId: string): ActionFuncAsync {
 
         // Users can always view archived channels, so no redirection needed
 
-        dispatch({type: ChannelTypes.DELETE_CHANNEL_SUCCESS, data: {id: channelId, viewArchivedChannels: true}});
+        dispatch({type: ChannelTypes.DELETE_CHANNEL_SUCCESS, data: {id: channelId}});
 
         return {data: true};
     };
@@ -669,7 +669,7 @@ export function unarchiveChannel(channelId: string): ActionFuncAsync {
             return {error};
         }
 
-        dispatch({type: ChannelTypes.UNARCHIVED_CHANNEL_SUCCESS, data: {id: channelId, viewArchivedChannels: true}});
+        dispatch({type: ChannelTypes.UNARCHIVED_CHANNEL_SUCCESS, data: {id: channelId}});
 
         return {data: true};
     };

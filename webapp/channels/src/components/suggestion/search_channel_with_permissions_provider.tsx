@@ -11,7 +11,6 @@ import {
     getChannelsInCurrentTeam,
 } from 'mattermost-redux/selectors/entities/channels';
 import {getMyChannelMemberships} from 'mattermost-redux/selectors/entities/common';
-import {getConfig} from 'mattermost-redux/selectors/entities/general';
 import {getCurrentUserLocale} from 'mattermost-redux/selectors/entities/i18n';
 import {haveIChannelPermission} from 'mattermost-redux/selectors/entities/roles';
 import {getCurrentTeamId} from 'mattermost-redux/selectors/entities/teams';
@@ -189,9 +188,6 @@ export default class SearchChannelWithPermissionsProvider extends Provider {
         const completedChannels: Record<Channel['id'], boolean> = {};
 
         const channelFilter = this.makeChannelSearchFilter(channelPrefix);
-
-        const config = getConfig(state);
-        const viewArchivedChannels = true; // Always true as access to archived channels is now allowed
 
         for (const channel of allChannels) {
             if (completedChannels[channel.id]) {

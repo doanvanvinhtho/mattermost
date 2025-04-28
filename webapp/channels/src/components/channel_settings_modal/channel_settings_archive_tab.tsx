@@ -11,8 +11,6 @@ import {deleteChannel} from 'actions/views/channel';
 
 import ConfirmationModal from 'components/confirm_modal';
 
-import type {GlobalState} from 'types/store';
-
 type ChannelSettingsArchiveTabProps = {
     channel: Channel;
     onHide: () => void;
@@ -24,7 +22,6 @@ function ChannelSettingsArchiveTab({
 }: ChannelSettingsArchiveTabProps) {
     const {formatMessage} = useIntl();
     const dispatch = useDispatch();
-
 
     const [showArchiveConfirmModal, setShowArchiveConfirmModal] = useState(false);
 
