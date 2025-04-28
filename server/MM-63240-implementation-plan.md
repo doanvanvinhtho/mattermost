@@ -22,64 +22,37 @@ This issue involves replacing the `TeamSettings.ExperimentalViewArchivedChannels
 
 ## Implementation Plan
 
-### 1. Add the New Setting in Config
+After each step below, commit the changes and update the implementation plan to mark this step as done.
+
+### 1. Stop relying on `TeamSettings.ExperimentalViewArchivedChannels`
+
+- Everywhere we use `TeamSettings.ExperimentalViewArchivedChannels`, replace it with a `if (true)` condition.
+- Now, remove all the dead code paths.
+- Update the tests
+- Update the API documentation as needed.
+- After this change, the `ExperimentalViewArchivedChannels` setting will no longer be used in the codebase.
+- Do not remove it from the configuration block, but mark it as deprecated.
+
+### 2. Add the New Config Setting
 
 - Add `BrowseArchivedPublicChannels` to the `TeamSettings` struct in `/public/model/config.go`
 - Set a default value of `true` in the `SetDefaults()` method
 - Add appropriate JSON tags and documentation
+- Expose the new setting in `/config/client.go` for the frontend to use
+- Update telemetry reporting to include the new setting
+- Add unit tests for the new setting
 
-### 2. Update API Endpoints for Channel Browsing
+### 2. Update API/App/Store layers
 
 - Modify the `getPublicChannelsForTeam` endpoint in `/channels/api4/channel.go`
 - Pass the new setting to the App layer
-
-### 3. Update App Layer
-
 - Modify the `GetPublicChannelsForTeam` method in `/channels/app/channel.go`
 - Pass the new setting to the Store layer
-
-### 4. Update Store Layer
-
 - Modify the `GetPublicChannelsForTeam` method in `/channels/store/sqlstore/channel_store.go`
 - Update the query to conditionally include/exclude archived channels based on the new setting
 
-### 5. Update Authorization Logic
+### 3. Update e2e tests
 
-- Ensure that users can still access archived channels where they are members
-- Update any permission checks to use the new setting
+- Add a Playwright test to validate that archived channels are hidden when using the `Browse Channels` feature and `TeamSettings.BrowseArchivedPublicChannels` is set to false.
+- Add a Playwright test to validate that archived channels are shown when using the `Browse Channels` feature and `TeamSettings.BrowseArchivedPublicChannels` is set to true.
 
-### 6. Update Client Config
-
-- Expose the new setting in `/config/client.go` for the frontend to use
-
-### 7. Add Migration Logic
-
-- Add logic to migrate existing `ExperimentalViewArchivedChannels` settings to the new `BrowseArchivedPublicChannels` setting
-- Handle the case where the old setting is false (new setting should also be false)
-
-### 8. Add Telemetry
-
-- Update telemetry reporting to include the new setting
-
-### 9. Add Tests
-
-- Add unit tests for the new setting
-- Update existing tests that use `ExperimentalViewArchivedChannels`
-- Add integration tests for the new behavior
-
-### 10. Maintain Backward Compatibility (Optional)
-
-- Keep the old setting for a transition period
-- Add deprecation warnings for the old setting
-
-## Notes
-
-- The old setting controlled visibility in many places, while the new setting specifically focuses on browsing public channels
-- This change aims to provide more granular control while maintaining a consistent user experience
-- We'll need to ensure that users can still access archived channels where they are members, regardless of the new setting's value
-
-## Technical Concerns
-
-- We need to ensure we don't break existing functionality
-- We should consider the impact on API clients that might be using the current behavior
-- We should document the change clearly for administrators
