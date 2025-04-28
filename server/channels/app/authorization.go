@@ -136,14 +136,12 @@ func (a *App) SessionHasPermissionToChannels(c request.CTX, session model.Sessio
 		return true
 	}
 
+	// make sure all channels exist, otherwise return false.
 	for _, channelID := range channelIDs {
 		if channelID == "" {
 			return false
 		}
-	}
 
-	// make sure all channels exist, otherwise return false.
-	for _, channelID := range channelIDs {
 		_, appErr := a.GetChannel(c, channelID)
 		if appErr != nil {
 			return false
