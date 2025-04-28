@@ -140,24 +140,6 @@ export const threadsReducer = (state: ThreadsState['threads'] = {}, action: MMRe
     return state;
 };
 
-// This function is no longer used as we keep all threads for archived channels
-/*
-function getThreadsOfChannel(threads: ThreadsState['threads'], channelId: string) {
-    const channelThreads: UserThread[] = [];
-    for (const rootId of Object.keys(threads)) {
-        if (
-            threads[rootId] &&
-            threads[rootId].post &&
-            threads[rootId].post.channel_id === channelId
-        ) {
-            channelThreads.push(threads[rootId]);
-        }
-    }
-
-    return channelThreads;
-}
-*/
-
 const initialState = {
     threads: {},
     threadsInTeam: {},
