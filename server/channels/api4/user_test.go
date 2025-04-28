@@ -3238,8 +3238,6 @@ func TestGetUsersInChannel(t *testing.T) {
 			require.Len(t, users, 3)
 		}
 
-		// all clients should be able to view archived channels now
-
 		// local client should be able to get the users still
 		users, _, appErr := th.LocalClient.GetUsersInChannel(context.Background(), channel.Id, 0, 1000, "")
 		require.NoError(t, appErr)
@@ -9173,6 +9171,7 @@ func TestResetPasswordFailedAttempts(t *testing.T) {
 		require.Equal(t, int(0), sysadminUser.FailedAttempts)
 	})
 }
+
 func TestSearchUsersWithMfaEnforced(t *testing.T) {
 	th := Setup(t).InitBasic()
 	defer th.TearDown()
