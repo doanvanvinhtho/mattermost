@@ -19,7 +19,7 @@ import {
     getCategoryInTeamByType,
     getCategoryInTeamWithChannel,
 } from 'mattermost-redux/selectors/entities/channel_categories';
-import {getConfig, getFeatureFlagValue} from 'mattermost-redux/selectors/entities/general';
+import {getConfig} from 'mattermost-redux/selectors/entities/general';
 import {getCurrentUserId} from 'mattermost-redux/selectors/entities/users';
 import type {
     ActionFuncAsync,
@@ -191,9 +191,9 @@ export function addChannelToInitialCategory(channel: Channel, setOnServer = fals
             });
         }
 
-        const shouldSort = getFeatureFlagValue(state, 'AutomaticChannelCategorySorting') === 'true';
+        const shouldSort = getConfig(state).ExperimentalChannelCategorySorting === 'true';
         if (shouldSort) {
-            const delimiter = getConfig(state).ExperimentalChannelCategorySortingDelimiter || '/';
+            const delimiter = '/';
 
             // Check if channel name matches the format "[Category Name] Channel Name"
             const categoryMatch = channel.display_name.split(delimiter);

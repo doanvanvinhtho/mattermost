@@ -6664,25 +6664,6 @@ const AdminDefinition: AdminDefinitionType = {
                             help_text: defineMessage({id: 'admin.experimental.youtubeReferrerPolicy.desc', defaultMessage: 'When true, the referrer policy for embedded YouTube videos will be set to "strict-origin-when-cross-origin" which resolves issues where YouTube video previews display as unavailable, while balancing the need to protect user privacy with some degree of referral data to support web functionalities, like analytics, logging, and third-party integrations. When false, the referrer policy will be set to "no-referrer" which enhances user privacy by not disclosing the source URL, but limits the ability to track user engagement and traffic sources in analytics tools.'}),
                             isDisabled: it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.EXPERIMENTAL.FEATURES)),
                         },
-                        {
-                            type: 'text',
-                            key: 'ExperimentalSettings.ChannelCategorySortingDelimiter',
-                            label: defineMessage({id: 'admin.experimental.channelCategorySortingDelimiter.title', defaultMessage: 'Channel Category Sorting Delimiter:'}),
-                            help_text: defineMessage({id: 'admin.experimental.channelCategorySortingDelimiter.desc', defaultMessage: 'Specify a single character delimiter for channel category sorting.'}),
-                            help_text_markdown: false,
-                            placeholder: defineMessage({id: 'admin.experimental.channelCategorySortingDelimiter.example', defaultMessage: 'E.g.: "/"'}),
-                            isDisabled: it.not(it.userHasWritePermissionOnResource(RESOURCE_KEYS.EXPERIMENTAL.FEATURES)),
-                            isHidden: it.configIsFalse('FeatureFlags', 'AutomaticChannelCategorySorting'),
-                            validate: (value: string) => {
-                                if (value && value.length !== 1) {
-                                    return new ValidationResult(false, defineMessage({
-                                        id: 'admin.experimental.channelCategorySortingDelimiter.error',
-                                        defaultMessage: 'The delimiter must be exactly one character',
-                                    }));
-                                }
-                                return new ValidationResult(true, '');
-                            },
-                        },
                     ],
                 },
             },
