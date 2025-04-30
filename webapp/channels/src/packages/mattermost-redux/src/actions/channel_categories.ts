@@ -192,61 +192,39 @@ export function addChannelToInitialCategory(channel: Channel, setOnServer = fals
         }
 
         const shouldSort = getConfig(state).ExperimentalChannelCategorySorting === 'true';
-        if (shouldSort) {
-            const delimiter = '/';
+        if (shouldSort && channel.default_category_name) {
+            // Find or create the category
+            let targetCategory = categories.find((category) =>
+                category.type === CategoryTypes.CUSTOM &&
+                category.display_name.toLowerCase() === channel.default_category_name!.toLowerCase(),
+            );
 
-            // Check if channel name matches the format "[Category Name] Channel Name"
-            const categoryMatch = channel.display_name.split(delimiter);
-            if (categoryMatch.length > 1) {
-                const categoryName = categoryMatch[0];
-                if (!categoryName) {
+            if (!targetCategory) {
+                if (!setOnServer) {
                     return {data: false};
                 }
 
-                // Remove the category name from the channel display name
-                const channelName = categoryMatch.slice(1).join(delimiter);
-                try {
-                    await Client4.patchChannel(channel.id, {
-                        display_name: channelName,
-                    });
-                } catch (error) {
-                    forceLogoutIfNecessary(error, dispatch, getState);
-                    dispatch(logError(error));
+                // Create new category if it doesn't exist
+                const result = await dispatch(createCategory(channel.team_id, channel.default_category_name));
+                if (result.error) {
+                    // If category creation fails, fall back to default behavior
+                    // eslint-disable-next-line no-console
+                    console.error('Failed to create category:', result.error);
+                } else {
+                    targetCategory = result.data;
                 }
+            }
 
-                // Find or create the category
-                let targetCategory = categories.find((category) =>
-                    category.type === CategoryTypes.CUSTOM &&
-                    category.display_name === categoryName,
-                );
-
-                if (!targetCategory) {
-                    if (!setOnServer) {
-                        return {data: false};
-                    }
-
-                    // Create new category if it doesn't exist
-                    const result = await dispatch(createCategory(channel.team_id, categoryName));
-                    if (result.error) {
-                        // If category creation fails, fall back to default behavior
-                        // eslint-disable-next-line no-console
-                        console.error('Failed to create category:', result.error);
-                    } else {
-                        targetCategory = result.data;
-                    }
-                }
-
-                if (targetCategory) {
-                    await dispatch({
-                        type: ChannelCategoryTypes.RECEIVED_CATEGORIES,
-                        data: [{
-                            ...targetCategory,
-                            channel_ids: insertWithoutDuplicates(targetCategory.channel_ids ?? [], channel.id, 0),
-                        }],
-                    });
-                    if (setOnServer) {
-                        return dispatch(addChannelToCategory(targetCategory.id, channel.id));
-                    }
+            if (targetCategory) {
+                await dispatch({
+                    type: ChannelCategoryTypes.RECEIVED_CATEGORIES,
+                    data: [{
+                        ...targetCategory,
+                        channel_ids: insertWithoutDuplicates(targetCategory.channel_ids ?? [], channel.id, 0),
+                    }],
+                });
+                if (setOnServer) {
+                    return dispatch(addChannelToCategory(targetCategory.id, channel.id));
                 }
             }
         }
