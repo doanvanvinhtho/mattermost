@@ -106,7 +106,6 @@ const LDAPWizard = (props: Props) => {
 
     const [activeSectionKey, setActiveSectionKey] = useState<string | null>(null);
     const [intersectingSectionKeys, setIntersectingSectionKeys] = useState<Set<string>>(new Set());
-    const scrollContainerRef = useRef<HTMLDivElement>(null);
     const sectionRefs = useRef<Record<string, HTMLDivElement | null>>({});
 
     // Set initial active section
@@ -147,12 +146,10 @@ const LDAPWizard = (props: Props) => {
 
         const observer = new IntersectionObserver(observerCallback, observerOptions);
 
-        let observedCount = 0;
         memoizedSections.forEach((section) => {
             const el = sectionRefs.current[section.key];
             if (el) {
                 observer.observe(el);
-                observedCount++;
             }
         });
 
@@ -563,11 +560,6 @@ const LDAPWizard = (props: Props) => {
     };
 
     const renderSettings = () => {
-        // For type checking
-        if (!('sections' in schema && schema.sections)) {
-            return null;
-        }
-
         const renderedSections: React.ReactNode[] = [];
 
         memoizedSections.forEach((section) => {
@@ -675,8 +667,6 @@ const LDAPWizard = (props: Props) => {
                             }}
                             role='button'
                             tabIndex={0}
-
-                            // for accessibility: allow activation with Enter/Space
                             onKeyDown={(e) => {
                                 if (e.key === 'Enter' || e.key === ' ') {
                                     e.currentTarget.click();
@@ -687,13 +677,8 @@ const LDAPWizard = (props: Props) => {
                         </div>
                     ))}
                 </div>
-                <div
-                    className='admin-console__wrapper'
-                >
-                    <div
-                        className='admin-console__content'
-                        ref={scrollContainerRef}
-                    >
+                <div className='admin-console__wrapper'>
+                    <div className='admin-console__content'>
                         <form
                             className='form-horizontal'
                             role='form'
@@ -712,9 +697,7 @@ const LDAPWizard = (props: Props) => {
                     onClick={handleSubmit}
                     savingMessage={props.intl.formatMessage({id: 'admin.saving', defaultMessage: 'Saving Config...'})}
                 />
-                <WithTooltip
-                    title={state?.serverError ?? ''}
-                >
+                <WithTooltip title={state?.serverError ?? ''}>
                     <div
                         className='error-message'
                         data-testid='errorMessage'
