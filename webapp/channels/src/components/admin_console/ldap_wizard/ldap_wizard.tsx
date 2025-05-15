@@ -31,8 +31,16 @@ import LDAPTextSetting from './ldap_text_setting';
 import {ldapWizardAdminDefinition} from '../admin_definition';
 import {getConfigFromState, isSetByEnv, SchemaAdminSettings} from '../schema_admin_settings';
 import SchemaText from '../schema_text';
-import type {AdminDefinitionSetting, AdminDefinitionSettingButton, AdminDefinitionSettingFileUpload, AdminDefinitionSubSectionSchema, ConsoleAccess} from '../types';
+import type {AdminDefinitionConfigSchemaSection, AdminDefinitionSetting, AdminDefinitionSettingButton, AdminDefinitionSettingFileUpload, AdminDefinitionSubSectionSchema, ConsoleAccess} from '../types';
 import './ldap_wizard.scss';
+
+export type LDAPAdminDefinitionConfigSchemaSettings = AdminDefinitionSubSectionSchema & {
+    sections?: LDAPAdminDefinitionConfigSchemaSection[];
+}
+
+export type LDAPAdminDefinitionConfigSchemaSection = AdminDefinitionConfigSchemaSection & {
+    sectionTitle?: string;
+}
 
 export type GeneralSettingProps = {
     setting: AdminDefinitionSetting;
@@ -115,9 +123,9 @@ const LDAPWizard = (props: Props) => {
         }
 
         const observerCallback = (entries: IntersectionObserverEntry[]) => {
-            setIntersectingSectionKeys(prevKeys => {
+            setIntersectingSectionKeys((prevKeys) => {
                 const newKeys = new Set(prevKeys);
-                entries.forEach(entry => {
+                entries.forEach((entry) => {
                     const key = (entry.target as HTMLElement).dataset.sectionKey;
                     if (key) {
                         if (entry.isIntersecting) {
@@ -140,7 +148,7 @@ const LDAPWizard = (props: Props) => {
         const observer = new IntersectionObserver(observerCallback, observerOptions);
 
         let observedCount = 0;
-        memoizedSections.forEach(section => {
+        memoizedSections.forEach((section) => {
             const el = sectionRefs.current[section.key];
             if (el) {
                 observer.observe(el);
@@ -171,7 +179,6 @@ const LDAPWizard = (props: Props) => {
         } else if (!activeSectionKey && newActiveKey && memoizedSections.length > 0) {
             setActiveSectionKey(newActiveKey);
         }
-
     }, [intersectingSectionKeys, memoizedSections, activeSectionKey]);
 
     const buildTextSetting = (setting: AdminDefinitionSetting) => {
@@ -614,7 +621,7 @@ const LDAPWizard = (props: Props) => {
                     key={section.key}
                     ref={(el) => {
                         if (sectionRefs.current) {
-                             sectionRefs.current[section.key] = el;
+                            sectionRefs.current[section.key] = el;
                         }
                     }}
                     data-section-key={section.key}
@@ -663,22 +670,20 @@ const LDAPWizard = (props: Props) => {
                             onClick={() => {
                                 const sectionElement = sectionRefs.current[section.key];
                                 if (sectionElement) {
-                                    sectionElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                                    sectionElement.scrollIntoView({behavior: 'smooth', block: 'start'});
                                 }
                             }}
                             role='button'
                             tabIndex={0}
-                             // for accessibility: allow activation with Enter/Space
-                             onKeyDown={(e) => {
+
+                            // for accessibility: allow activation with Enter/Space
+                            onKeyDown={(e) => {
                                 if (e.key === 'Enter' || e.key === ' ') {
                                     e.currentTarget.click();
                                 }
                             }}
                         >
-                            <FormattedMessage
-                                id={section.title}
-                                defaultMessage={section.title}
-                            />
+                            {section.sectionTitle || section.title}
                         </div>
                     ))}
                 </div>
