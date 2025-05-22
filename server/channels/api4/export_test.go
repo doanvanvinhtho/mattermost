@@ -17,9 +17,7 @@ import (
 )
 
 func TestListExports(t *testing.T) {
-	if mainHelper.Options.RunParallel {
-		t.Parallel()
-	}
+	mainHelper.Parallel(t)
 	th := Setup(t)
 	defer th.TearDown()
 
@@ -59,11 +57,13 @@ func TestListExports(t *testing.T) {
 	}, "expected exports")
 
 	th.TestForSystemAdminAndLocal(t, func(t *testing.T, c *model.Client4) {
-		value := *th.App.Config().ExportSettings.Directory
-		th.App.UpdateConfig(func(cfg *model.Config) { *cfg.ExportSettings.Directory = value + "new" })
-		defer th.App.UpdateConfig(func(cfg *model.Config) { *cfg.ExportSettings.Directory = value })
+		originalExportDir := *th.App.Config().ExportSettings.Directory
+		th.App.UpdateConfig(func(cfg *model.Config) { *cfg.ExportSettings.Directory = "new" })
+		defer th.App.UpdateConfig(func(cfg *model.Config) {
+			*cfg.ExportSettings.Directory = originalExportDir
+		})
 
-		exportDir := filepath.Join(dataDir, value+"new")
+		exportDir := filepath.Join(dataDir, *th.App.Config().ExportSettings.Directory)
 		err := os.Mkdir(exportDir, 0700)
 		require.NoError(t, err)
 		defer func() {
@@ -88,9 +88,7 @@ func TestListExports(t *testing.T) {
 }
 
 func TestDeleteExport(t *testing.T) {
-	if mainHelper.Options.RunParallel {
-		t.Parallel()
-	}
+	mainHelper.Parallel(t)
 	th := Setup(t)
 	defer th.TearDown()
 
@@ -135,9 +133,7 @@ func TestDeleteExport(t *testing.T) {
 }
 
 func TestDownloadExport(t *testing.T) {
-	if mainHelper.Options.RunParallel {
-		t.Parallel()
-	}
+	mainHelper.Parallel(t)
 	th := Setup(t)
 	defer th.TearDown()
 
